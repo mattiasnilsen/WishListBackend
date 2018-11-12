@@ -1,0 +1,7 @@
+{
+  "name": "WishlistBackend",
+  "version": "1.0.0",
+  "devDependencies": {
+    "serverless-sam": "^0.2.0"
+  }
+}
