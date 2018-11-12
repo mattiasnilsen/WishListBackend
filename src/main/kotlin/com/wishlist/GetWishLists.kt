@@ -14,8 +14,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class GetWishLists: RequestHandler<Map<String, Any>, ApiGatewayResponse> {
 
     private fun retrieveAllWishLists() : List<WishList> {
-        Database.connect("jdbc:postgresql://wishlist.cr5mv2wtlfks.eu-central-1.rds.amazonaws.com/wishlist", driver = "org.postgresql.Driver",
-                user = "kerp", password = "")
+        Database.connect(System.getenv("WISHLIST_DB_URL") ?: "", driver = "org.postgresql.Driver",
+                user = System.getenv("WISHLIST_DB_USER") ?: "", password = System.getenv("WISHLIST_DB_PASS") ?: "")
+
 
         return transaction {
             WishList.all().toList()

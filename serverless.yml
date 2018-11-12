@@ -31,6 +31,11 @@ provider:
       - "subnet-05d5c337a2f91e8bf"
       - "subnet-06efefb3e6c81f28f"
 
+  environment:
+    WISHLIST_DB_URL: "jdbc:postgresql://wishlist.cr5mv2wtlfks.eu-central-1.rds.amazonaws.com/wishlist"
+    WISHLIST_DB_USER: ${ssm:wishListDBUser}
+    WISHLIST_DB_PASS: ${ssm:wishListDBPass}
+
 # you can define service wide environment variables here
 #  environment:
 #    variable1: value1
