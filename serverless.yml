@@ -55,3 +55,10 @@ functions:
           path: wishlist
           method: get
           cors: true
+  CreateWishList:
+    handler: com.wishlist.CreateWishList
+    events:
+    - http:
+        path: wishlist
+        method: post
+        cors: true

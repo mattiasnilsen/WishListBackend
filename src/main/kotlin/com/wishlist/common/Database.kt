@@ -19,4 +19,13 @@ class Database {
         }
     }
 
+    fun saveWishList(newName: String, newOwner: String) : WishList{
+        return transaction {
+            WishList.new {
+                name = newName
+                owner = newOwner
+            }
+        }
+    }
+
 }
