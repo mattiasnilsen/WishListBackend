@@ -62,3 +62,11 @@ functions:
         path: wishlist
         method: post
         cors: true
+  DeleteWishList:
+    handler: com.wishlist.DeleteWishList
+    events:
+    - http:
+        path: wishlist
+        method: delete
+        cors: true
+

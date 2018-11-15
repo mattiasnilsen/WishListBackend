@@ -19,12 +19,18 @@ class Database {
         }
     }
 
-    fun saveWishList(newName: String, newOwner: String) : WishList{
+    fun saveWishList(newName: String, newOwner: String) : WishList {
         return transaction {
             WishList.new {
                 name = newName
                 owner = newOwner
             }
+        }
+    }
+
+    fun deleteWishList(id: Int) {
+        transaction {
+            WishList.findById(id)?.delete()
         }
     }
 
