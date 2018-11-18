@@ -6,13 +6,14 @@ import com.wishlist.common.*
 import org.apache.logging.log4j.LogManager
 
 @Suppress("unused")
-class GetWishLists: RequestHandler<Map<String, Any>, ApiGatewayResponse> {
+class GetWishLists: RequestHandler<ApigatewayRequest.Input, ApiGatewayResponse> {
 
-    override fun handleRequest(input:Map<String, Any>, context: Context): ApiGatewayResponse {
-        LOG.info("received: " + input.keys.toString())
 
+    override fun handleRequest(input: ApigatewayRequest.Input, context: Context): ApiGatewayResponse {
         val db = Database()
-        val serializedWishLists = db.retrieveAllWishLists().map(WishList::serialize)
+        val accountId = input.requestContext?.accountId.orEmpty()
+        val serializedWishLists = db.retrieveMyWishLists(accountId).map(WishList::serialize)
+
 
         return ApiGatewayResponse.build {
             statusCode = 200

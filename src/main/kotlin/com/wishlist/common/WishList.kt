@@ -8,6 +8,7 @@ import org.jetbrains.exposed.dao.IntIdTable
 object WishLists : IntIdTable() {
     val name = varchar("name", 50)
     val owner = varchar("owner", 50)
+    val accountID = varchar("accountID", 50)
 }
 
 fun Entity<*>.serialize() = this.klass.dependsOnColumns.associate { it.name to this.readValues[it].toString() }
@@ -17,4 +18,5 @@ class WishList(id: EntityID<Int>) : Entity<Int>(id) {
 
     var name  by WishLists.name
     var owner by WishLists.owner
+    var accountID by WishLists.accountID
 }

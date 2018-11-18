@@ -34,4 +34,10 @@ class Database {
         }
     }
 
+    fun retrieveMyWishLists(accountId: String): List<WishList> {
+        return transaction {
+            WishList.find{WishLists.accountID eq accountId}.toList()
+        }
+    }
+
 }
