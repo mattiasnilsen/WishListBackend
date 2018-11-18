@@ -24,7 +24,8 @@ class ApiGatewayResponse(
 
     var statusCode: Int = 200
     var rawBody: String? = null
-    var headers: Map<String, String>? = Collections.emptyMap()
+    var headers: Map<String, String>? = mapOf("Access-Control-Allow-Origin" to "*",
+                                              "Access-Control-Allow-Credentials" to "true")
     var objectBody: Response? = null
     var binaryBody: ByteArray? = null
     var base64Encoded: Boolean = false
