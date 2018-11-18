@@ -52,21 +52,21 @@ functions:
     handler: com.wishlist.GetWishLists
     events:
       - http:
-          path: wishlist
+          path: wishlists
           method: get
           cors: true
   CreateWishList:
     handler: com.wishlist.CreateWishList
     events:
     - http:
-        path: wishlist
+        path: wishlists
         method: post
         cors: true
   DeleteWishList:
     handler: com.wishlist.DeleteWishList
     events:
     - http:
-        path: wishlist
+        path: wishlists
         method: delete
         cors: true
 
