@@ -69,4 +69,10 @@ functions:
         path: wishlists
         method: delete
         cors: true
+  PostConfirmationTrigger:
+    handler: com.wishlist.triggers.PostConfirmation
+    events:
+    - cognitoUserPool:
+        pool: wishlist
+        trigger: PostConfirmation
 

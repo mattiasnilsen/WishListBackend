@@ -1,5 +1,4 @@
 package com.wishlist.common
-
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -40,4 +39,11 @@ class Database {
         }
     }
 
+    fun createUser(userName: String, newAccountID: String) : User {
+        return transaction {
+            User.new(newAccountID) {
+                name = userName
+            }
+        }
+    }
 }
