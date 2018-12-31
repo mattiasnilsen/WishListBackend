@@ -48,9 +48,9 @@ class ApiGatewayResponse(
       }
       return ApiGatewayResponse(statusCode, body, headers, base64Encoded)
     }
+  }
 
-    override fun toString(): String {
-      return "Builder(LOG=$LOG, objectMapper=$objectMapper, statusCode=$statusCode, rawBody=$rawBody, headers=$headers, objectBody=$objectBody, binaryBody=${Arrays.toString(binaryBody)}, base64Encoded=$base64Encoded)"
-    }
+  override fun toString(): String {
+    return "ApiGatewayResponse(statusCode=$statusCode, body=$body, headers=$headers, isBase64Encoded=$isBase64Encoded)"
   }
 }

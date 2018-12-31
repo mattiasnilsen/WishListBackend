@@ -10,8 +10,6 @@ object WishLists : IntIdTable() {
     val owner = reference("owner", Users)
 }
 
-fun Entity<*>.serialize() = this.klass.dependsOnColumns.associate { it.name to this.readValues[it].toString() }
-
 class WishList(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, WishList>(WishLists)
 

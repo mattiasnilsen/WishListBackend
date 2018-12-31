@@ -33,9 +33,9 @@ class Database {
         }
     }
 
-    fun retrieveMyWishLists(accountId: String): List<WishList> {
+    fun retrieveMyWishLists(owner: String): List<WishList> {
         return transaction {
-            WishList.find{WishLists.accountID eq accountId}.toList()
+            WishList.find{WishLists.owner eq owner}.toList()
         }
     }
 
