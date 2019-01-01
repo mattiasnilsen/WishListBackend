@@ -2,23 +2,38 @@ package com.wishlist
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import com.wishlist.common.ApiGatewayRequest
 import com.wishlist.common.ApiGatewayResponse
 import com.wishlist.common.Database
 import org.apache.logging.log4j.LogManager
 
 @Suppress("unused")
-class CreateWishList : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
-    override fun handleRequest(input: Map<String, Any>, context: Context): ApiGatewayResponse {
-        LOG.info("received: " + input.keys.toString())
+class CreateWishList : RequestHandler<ApiGatewayRequest, ApiGatewayResponse> {
+    override fun handleRequest(input: ApiGatewayRequest, context: Context): ApiGatewayResponse {
+        var statusCode = 200
+        input.parseBody()
+        val name = input.parsedBody?.name.orEmpty()
+        val userID = input.requestContext?.authorizer?.claims?.sub.orEmpty()
 
-        val db = Database()
-
-        val name = input["name"].toString()
-        val owner = input["owner"].toString()
-        db.saveWishList(name, owner)
+        if(name.isEmpty()) {
+           LOG.error("Cannot create wish list with empty name")
+           statusCode = 400
+        } else {
+            Database().saveWishList(userID, name)
+        }
 
         return ApiGatewayResponse.build {
-            statusCode = 200
+            this.statusCode = statusCode
+        }
+    }
+
+    data class Body(val name: String? = null) {
+        companion object {
+            fun parse(str: String): Body {
+                return ObjectMapper().readValue(str)
+            }
         }
     }
 

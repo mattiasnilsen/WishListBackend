@@ -18,11 +18,14 @@ class Database {
         }
     }
 
-    fun saveWishList(newName: String, newOwner: String) : WishList {
-        return transaction {
-            WishList.new {
-                name = newName
-                owner = newOwner
+    fun saveWishList(newOwner: String, newName: String) {
+        transaction {
+            val user = getUser(newOwner)
+            if(user != null) {
+                WishList.new {
+                    owner = user
+                    name = newName
+                }
             }
         }
     }
@@ -44,6 +47,12 @@ class Database {
             User.new(newAccountID) {
                 name = userName
             }
+        }
+    }
+
+    private fun getUser(id: String) : User? {
+        return transaction {
+            User.findById(id)
         }
     }
 }
