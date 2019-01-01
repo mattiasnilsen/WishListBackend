@@ -1,6 +1,6 @@
 package com.wishlist.triggers.common
 
-import com.wishlist.common.ApigatewayRequest
+import com.wishlist.common.ApiGatewayRequest
 import com.wishlist.common.Response
 
 data class CognitoTriggerInput(var region: String? = null,
@@ -11,7 +11,7 @@ data class CognitoTriggerInput(var region: String? = null,
                                var UserPoolId: String? = null,
                                var resourcePath: String? = null,
                                var version: Int? = null,
-                               var callerContext: ApigatewayRequest.CallerContext? = null)
+                               var callerContext: ApiGatewayRequest.CallerContext? = null)
 
 data class Request(var userAttributes: UserAttributes? = null,
                    var ValidationData: Any? = null)

@@ -7,11 +7,11 @@ import org.apache.logging.log4j.LogManager
 import org.jetbrains.exposed.sql.transactions.transaction
 
 @Suppress("unused")
-class GetWishLists: RequestHandler<ApigatewayRequest.Input, ApiGatewayResponse> {
+class GetWishLists: RequestHandler<ApiGatewayRequest, ApiGatewayResponse> {
 
 
-    override fun handleRequest(input: ApigatewayRequest.Input, context: Context): ApiGatewayResponse {
-        val userID = input.requestContext?.authorizer?.claims?.get("sub").orEmpty()
+    override fun handleRequest(input: ApiGatewayRequest, context: Context): ApiGatewayResponse {
+        val userID = input.requestContext?.authorizer?.claims?.sub.orEmpty()
 
         LOG.info("Retrieving wish lists for user: $userID")
 
