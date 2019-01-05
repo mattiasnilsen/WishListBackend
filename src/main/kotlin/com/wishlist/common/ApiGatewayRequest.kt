@@ -1,7 +1,5 @@
 package com.wishlist.common
 
-import com.wishlist.CreateWishList
-
 data class ApiGatewayRequest(var resource: String? = null,
                              var path: String? = null,
                              var httpMethod: String? = null,
@@ -12,11 +10,7 @@ data class ApiGatewayRequest(var resource: String? = null,
                              var stageVariables: MutableMap<String, String>? = null,
                              var requestContext: RequestContext? = null,
                              var body: String? = null,
-                             var isBase64Encoded: Boolean? = null,
-                             var parsedBody: CreateWishList.Body? = null) {
-    fun parseBody() {
-        parsedBody = CreateWishList.Body.parse(body.orEmpty())
-    }
+                             var isBase64Encoded: Boolean? = null) {
 
     data class RequestContext(var resourceId: String? = null,
                               var authorizer: Authorizer? = null,

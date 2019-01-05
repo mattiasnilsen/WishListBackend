@@ -13,8 +13,8 @@ import org.apache.logging.log4j.LogManager
 class CreateWishList : RequestHandler<ApiGatewayRequest, ApiGatewayResponse> {
     override fun handleRequest(input: ApiGatewayRequest, context: Context): ApiGatewayResponse {
         var statusCode = 200
-        input.parseBody()
-        val name = input.parsedBody?.name.orEmpty()
+        val parsedBody = Body.parse(input.body.orEmpty())
+        val name = parsedBody.name.orEmpty()
         val userID = input.requestContext?.authorizer?.claims?.sub.orEmpty()
 
         if(name.isEmpty()) {

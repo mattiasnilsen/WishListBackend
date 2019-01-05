@@ -30,9 +30,12 @@ class Database {
         }
     }
 
-    fun deleteWishList(id: Int) {
+    fun deleteWishList(id: Int, owner: String) {
         transaction {
-            WishList.findById(id)?.delete()
+            val wishListToDelete = WishList.findById(id)
+            if(wishListToDelete?.owner?.id?.value == owner) {
+                wishListToDelete.delete()
+            }
         }
     }
 
