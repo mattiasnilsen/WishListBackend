@@ -22,9 +22,7 @@ class CreateWish : RequestHandler<ApiGatewayRequest, ApiGatewayResponse> {
             LOG.error("Cannot create wish list with empty name")
             statusCode = 400
         } else {
-            LOG.error(wish + wishList)
-            Database().saveWish(userID, wish, wishList, LOG)
-            LOG.error(wish + wishList)
+            Database().saveWish(userID, wish, wishList)
         }
 
         return ApiGatewayResponse.build {
