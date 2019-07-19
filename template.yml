@@ -2,19 +2,205 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: 'SAM template for Serverless framework service: '
 Resources:
-  Hello:
-    Type: 'AWS::Serverless::Function'
-    Properties:
-      Handler: com.serverless.Handler
-      Runtime: java8
-      CodeUri: build/libs/hello-dev-all.jar
-      MemorySize: 128
-      Timeout: 3
   GetWishList:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: com.wishlist.GetWishLists
       Runtime: java8
-      CodeUri: build/libs/hello-dev-all.jar
+      CodeUri: build/libs/WishListBackend-dev-all.jar
       MemorySize: 1024
-      Timeout: 10
+      Timeout: 30
+      Environment:
+        Variables:
+          WISHLIST_DB_URL: >-
+            jdbc:postgresql://wishlist.cr5mv2wtlfks.eu-central-1.rds.amazonaws.com/wishlist
+          WISHLIST_DB_USER: kerp
+          WISHLIST_DB_PASS: lol123123
+      Events:
+        Event1:
+          Type: Api
+          Properties:
+            Path: /wishlists
+            Method: get
+            RestApiId:
+              Ref: WishListBackend
+  WishListBackend:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      StageName: dev
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title:
+            Ref: 'AWS::StackName'
+        paths:
+          /wishlists:
+            options:
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: '{ "statusCode" : 200 }'
+                responses:
+                  default:
+                    statusCode: 200
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key'''
+                      method.response.header.Access-Control-Allow-Methods: '''options,get,post,delete'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                    responseTemplates:
+                      application/json: '{}'
+              responses:
+                '200':
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+            get:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetWishList.Arn}/invocations
+                responses:
+                  default:
+                    statusCode: 200
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key'''
+                      method.response.header.Access-Control-Allow-Methods: '''get'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                    responseTemplates:
+                      application/json: '{}'
+              responses:
+                '200':
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+            post:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateWishList.Arn}/invocations
+                responses:
+                  default:
+                    statusCode: 200
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key'''
+                      method.response.header.Access-Control-Allow-Methods: '''options,get,post'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                    responseTemplates:
+                      application/json: '{}'
+              responses:
+                '200':
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+            delete:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteWishList.Arn}/invocations
+                responses:
+                  default:
+                    statusCode: 200
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key'''
+                      method.response.header.Access-Control-Allow-Methods: '''options,get,post,delete'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                    responseTemplates:
+                      application/json: '{}'
+              responses:
+                '200':
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+  GetWishListLambdaPermission:
+    Type: 'AWS::Lambda::Permission'
+    DependsOn:
+      - GetWishList
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName:
+        Ref: GetWishList
+      Principal: apigateway.amazonaws.com
+  CreateWishList:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: com.wishlist.CreateWishList
+      Runtime: java8
+      CodeUri: build/libs/WishListBackend-dev-all.jar
+      MemorySize: 128
+      Timeout: 3
+      Environment:
+        Variables:
+          WISHLIST_DB_URL: >-
+            jdbc:postgresql://wishlist.cr5mv2wtlfks.eu-central-1.rds.amazonaws.com/wishlist
+          WISHLIST_DB_USER: kerp
+          WISHLIST_DB_PASS: lol123123
+      Events:
+        Event1:
+          Type: Api
+          Properties:
+            Path: /wishlists
+            Method: post
+            RestApiId:
+              Ref: WishListBackend
+  CreateWishListLambdaPermission:
+    Type: 'AWS::Lambda::Permission'
+    DependsOn:
+      - CreateWishList
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName:
+        Ref: CreateWishList
+      Principal: apigateway.amazonaws.com
+  DeleteWishList:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: com.wishlist.DeleteWishList
+      Runtime: java8
+      CodeUri: build/libs/WishListBackend-dev-all.jar
+      MemorySize: 128
+      Timeout: 3
+      Environment:
+        Variables:
+          WISHLIST_DB_URL: >-
+            jdbc:postgresql://wishlist.cr5mv2wtlfks.eu-central-1.rds.amazonaws.com/wishlist
+          WISHLIST_DB_USER: kerp
+          WISHLIST_DB_PASS: lol123123
+      Events:
+        Event1:
+          Type: Api
+          Properties:
+            Path: /wishlists
+            Method: delete
+            RestApiId:
+              Ref: WishListBackend
+  DeleteWishListLambdaPermission:
+    Type: 'AWS::Lambda::Permission'
+    DependsOn:
+      - DeleteWishList
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName:
+        Ref: DeleteWishList
+      Principal: apigateway.amazonaws.com

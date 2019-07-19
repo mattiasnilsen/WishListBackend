@@ -62,6 +62,13 @@ functions:
         path: wishlists
         method: post
         cors: true
+  CreateWish:
+    handler: com.wishlist.CreateWish
+    events:
+    - http:
+        path: wish
+        method: post
+        cors: true
   DeleteWishList:
     handler: com.wishlist.DeleteWishList
     events:
@@ -76,3 +83,22 @@ functions:
         pool: wishlist
         trigger: PostConfirmation
 
+#resources:
+#  Resources:
+#    WishListApi:
+#      Type: AWS::ApiGateway::RestApi
+#      Properties:
+#        Name: WishListApi
+#
+#
+#    WishListAuthorizer:
+#      Type: AWS::ApiGateway::Authorizer
+#      Properties:
+#        AuthorizerResultTtlInSeconds: 300
+#        IdentitySource: method.request.header.Authorization
+#        Name: WishListAuthorizer
+#        RestApiId:
+#          Ref: WishListApi
+#        Type: COGNITO_USER_POOLS
+#        ProviderARNs:
+#        - arn:aws:cognito-idp:eu-central-1:623945561130:userpool/eu-central-1_l4EJAaqJ6

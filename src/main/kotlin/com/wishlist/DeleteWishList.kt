@@ -34,6 +34,6 @@ class DeleteWishList : RequestHandler<ApiGatewayRequest, ApiGatewayResponse> {
     }
 
     companion object {
-        private val LOG = LogManager.getLogger(GetWishLists::class.java)
+        private val LOG = LogManager.getLogger(DeleteWishList::class.java)
     }
 }

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/WishListBackend.iml" filepath="$PROJECT_DIR$/WishListBackend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WishListBackend.iml" filepath="$PROJECT_DIR$/WishListBackend.iml" group="WishListBackend" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/WishListBackend_main.iml" filepath="$PROJECT_DIR$/.idea/modules/WishListBackend_main.iml" group="WishListBackend" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/WishListBackend_test.iml" filepath="$PROJECT_DIR$/.idea/modules/WishListBackend_test.iml" group="WishListBackend" />
     </modules>

@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "devDependencies": {
     "serverless-sam": "^0.2.0"
+  },
+  "dependencies": {
+    "serverless": "^1.48.0"
   }
 }

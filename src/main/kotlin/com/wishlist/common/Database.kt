@@ -1,4 +1,5 @@
 package com.wishlist.common
+import org.apache.logging.log4j.Logger
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -56,6 +57,21 @@ class Database {
     private fun getUser(id: String) : User? {
         return transaction {
             User.findById(id)
+        }
+    }
+
+    fun saveWish(userID: String, newWish: String, targetWishList: Int, log: Logger) {
+
+        return transaction {
+            log.error(targetWishList)
+            val addedTo = WishList.findById(targetWishList)
+            log.error(addedTo)
+            if(addedTo?.owner?.id?.value == userID) {
+                Wish.new {
+                    wish = newWish
+                    wishList = addedTo
+                }
+            }
         }
     }
 }
